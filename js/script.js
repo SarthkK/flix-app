@@ -48,7 +48,6 @@ async function displayPopularMovies(){
 // get popular shows
 async function displayPopularShows(){
     const { results } = await fetchAPIData('tv/popular');
-    console.log(results);
 
     results.forEach(result => {
         const div = document.createElement('div');
@@ -368,7 +367,7 @@ function init(){
             displaySlider();
             displayPopularMovies();
             break;
-        case '/shows' :
+        case '/shows.html' :
             (function loader(){console.log('loaded from js');})();
             displayPopularShows();
             break;
