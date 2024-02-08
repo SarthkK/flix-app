@@ -368,7 +368,7 @@ function init(){
             displaySlider();
             displayPopularMovies();
             break;
-        case '/shows.html' :
+        case '/shows' :
             (function loader(){console.log('loaded from js');})();
             displayPopularShows();
             break;
