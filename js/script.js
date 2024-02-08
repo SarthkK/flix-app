@@ -1,5 +1,3 @@
-const api_read_access_token = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZGIwYjhkYTRhNmM2YWJiMDY2MDhhNTU2ZDJiYWI0MCIsInN1YiI6IjY1YmIzYTJlMmQxZTQwMDE4NDViY2M5OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HcM-Ggk9xUmj4Ull6LgmNN2IM6LH0NXtkP8YckAVLhI';
-
 const global = {
     currentPath: window.location.pathname,
     search : {
@@ -204,7 +202,7 @@ async function searchAPIData(){
     const API_KEY = '72728d9c2f573fcd29a0dd99801efe27';
     const API_URL = 'https://api.themoviedb.org/3/';
     showSpinner();
-    const response = await fetch(`${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`);
+    const response = await fetch(`${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}`);
     const data = await response.json();
     hideSpinner();
     return data;
@@ -233,6 +231,11 @@ async function search(){
 }
 // Display search results
 function displaySearchResults(results){
+    // clear previous results
+   document.querySelector('#search-results').innerHTML = ``;
+   document.querySelector('#search-results-heading').innerHTML = ``;
+   document.querySelector('#pagination').innerHTML = ``;
+
     results.forEach(result => {
         const div = document.createElement('div');
         div.classList.add('card');
@@ -267,6 +270,34 @@ function displaySearchResults(results){
 // Create and Display Pagination
 function displayPagination(){
     const div = document.createElement('div');
+    div.classList.add('pagination');
+    div.innerHTML = `
+    <button class="btn btn-primary" id ="prev">Prev</button>
+    <button class="btn btn-primary" id ="next">Next</button>
+    <div class="page-counter">Page ${global.search.page} of ${global.search.totalPages}</div>
+    `;
+    document.querySelector('#pagination').appendChild(div);
+
+    // Disable prev button if on first page
+    if(global.search.page === 1){
+        document.querySelector('#prev').disabled = true;
+    }
+    // Disable next button if on last page
+    if(global.search.page === global.search.totalPages){
+        document.querySelector('#next').disabled = true;
+    }
+    // Next page
+    document.querySelector('#next').addEventListener('click', async () => {
+        global.search.page++;
+        const { results, total_pages } = await searchAPIData();
+        displaySearchResults(results)
+    })
+    // Previous page
+    document.querySelector('#prev').addEventListener('click', async () => {
+        global.search.page--;
+        const { results, total_pages } = await searchAPIData();
+        displaySearchResults(results)
+    })
 }
 // Display slider movies
 async function displaySlider(){
@@ -379,7 +410,7 @@ function init(){
             break;
         case '/search.html' :
             search();
-            break;
+            break; 
     }
 
     HighlightActiveLink();
