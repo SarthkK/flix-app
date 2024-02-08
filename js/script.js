@@ -136,7 +136,7 @@ async function displayMovieDetails(){
     document.querySelector('#movie-details').appendChild(div);
 }
 // Get show details
-async function displayShowDetails(){
+async function Details(){
     const show_id = window.location.split('=')[1];
     const show = await fetchAPIData(`tv/${show_id}`);
     displayBackgroundImage('show', show.backdrop_path);
@@ -369,6 +369,7 @@ function init(){
             displayPopularMovies();
             break;
         case '/shows.html' :
+            (function loader(){console.log('loaded from js');})();
             displayPopularShows();
             break;
         case '/movie-details.html' :
