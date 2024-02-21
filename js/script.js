@@ -133,7 +133,7 @@ async function displayMovieDetails(){
     document.querySelector('#movie-details').appendChild(div);
 }
 // Get show details
-async function Details(){
+async function displayShowDetails(){
     const show_id = window.location.split('=')[1];
     const show = await fetchAPIData(`tv/${show_id}`);
     displayBackgroundImage('show', show.backdrop_path);
