@@ -46,6 +46,7 @@ async function displayPopularMovies(){
 // get popular shows
 async function displayPopularShows(){
     const { results } = await fetchAPIData('tv/popular');
+    console.log('here');
 
     results.forEach(result => {
         const div = document.createElement('div');
@@ -134,7 +135,7 @@ async function displayMovieDetails(){
 }
 // Get show details
 async function displayShowDetails(){
-    const show_id = window.location.split('=')[1];
+    const show_id = window.location.search.split('=')[1];
     const show = await fetchAPIData(`tv/${show_id}`);
     displayBackgroundImage('show', show.backdrop_path);
     div = document.createElement('div');
@@ -398,8 +399,7 @@ function init(){
             displaySlider();
             displayPopularMovies();
             break;
-        case '/shows' :
-            (function loader(){console.log('loaded from js');})();
+        case '/shows.html' :
             displayPopularShows();
             break;
         case '/movie-details.html' :
